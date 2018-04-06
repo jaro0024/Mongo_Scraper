@@ -28,12 +28,11 @@ $(document).on("click", "#modalbutton", function () {
                 $('#actualnotes').text("There aren't any notes yet.");
             }
             // A textarea to add a new note body
-            $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+            $("#notes").append("<textarea id=bodyinput' name='body'></textarea>");
             // A button to submit a new note, with the id of the article saved to it
             $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
         });
 });
-
 
 // Save a note
 $(document).on("click", "#savenote", function () {
@@ -59,7 +58,6 @@ $(document).on("click", "#savenote", function () {
     // Also, remove the values entered in the input and textarea for note entry
     $("#bodyinput").val("");
 });
-
 
 // Delete a note
 $(document).on("click", "#deletenote", function () {

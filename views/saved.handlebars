@@ -14,12 +14,7 @@
                 </form>
             </span>
             <span class="input-group-btn">
-                {{!--
-                <form method="GET" action="/articles/{{this.id}}"> --}}
                 <button id="modalbutton" type="button" class="btn btn-secondary" data-toggle="modal" data-id={{this.id}} data-target="#myModal">NOTES</button>
-                    {{!-- <button id="modalbutton" type="submit" class="btn btn-secondary pull-right" data-toggle="modal" data-id={{this.id}} data-target="#myModal">NOTES</button> --}}
-                    {{!--
-                    <button type="submit" class="btn btn-secondary">Note</button> --}} {{!-- </form> --}}
             </span>
         </div>
         {{/each}}
@@ -32,39 +27,17 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Article Notes</h5>
+                    <h5 class="modal-title" id="myModalLabel">Notes for Article: 
+                        <span id="articleID"></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span id="articleID" aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div id="notes"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-secondary">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-    {{!--
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Notes for Article
-                        <span id="articleID"></span>
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <div id="notes"></div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 </div>

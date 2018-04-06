@@ -22,9 +22,8 @@
 	overflow: auto;
 }
 
-#notes{
-	width:50%;
-	float:right;
+#savenote {
+    display: block;
 }
 
 textarea, input{
