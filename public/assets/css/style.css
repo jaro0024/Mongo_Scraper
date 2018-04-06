@@ -2,6 +2,12 @@
 	padding-top: 30px;
 }
 
+.input-group-btn {
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+
 #wrapper{
 	width:960px;
 	margin: 0 auto;
@@ -17,7 +23,7 @@
 }
 
 #notes{
-	width:30%;
+	width:50%;
 	float:right;
 }
 

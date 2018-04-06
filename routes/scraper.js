@@ -64,72 +64,18 @@ router.get("/articles", function (req, res) {
     });
 });
 
-// Grab an article by its ObjectId
-router.get("/articles/:id", function (req, res) {
-    // Using the id passed in the id parameter,
-    // Prepare a query that finds the matching one in our db...
-    Article.findOne({ "_id": req.params.id })
-        // and populate all of the notes associated with it.
-        .populate("note")
-        // now, execute our query
-        .exec(function (err, doc) {
-            // Log any errors
-            if (err) {
-                console.log(err);
-            }
-            // Otherwise, send the doc to the browser as a json object
-            else {
-                res.render("notes", {
-                    articles: doc
-                });
-            }
-        });
-});
-
-// Replace the existing note of an article with a new one
-// or if no note exists for an article, make the posted note its note.
-router.post("/articles/:id", function (req, res) {
-    // Create a new note and pass the req.body to the entry.
-    var newNote = new Note(req.body);
-    var currentArticleID = req.params.id;
-    // and save the new note the db
-    newNote.save(function (err, doc) {
-        // log any errors
-        if (err) {
-            console.log(err);
-        }
-        // otherwise
-        else {
-            // using the Article id passed in the id parameter of our url,
-            // prepare a query that finds the matching Article in our db
-            // and update it to make it"s lone note the one we just saved
-            Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
-                // execute the above query
-                .exec(function (err, doc) {
-                    // log any errors
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // or send the document to the browser
-                        res.redirect("/articles/" + currentArticleID)
-                    }
-                });
-        }
-    });
-});
-
 // Saving an article
 router.post("/save/:id", function (req, res) {
     Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": true }, function (err, doc) {
-            // Log any errors
-            if (err) {
-                console.log(err);
-            } else {
-                // Or send the user back to the all articles page once saved
-                res.redirect("/saved");
-            }
-        })
-})
+        // Log any errors
+        if (err) {
+            console.log(err);
+        } else {
+            // Or send the user back to the all articles page once saved
+            res.redirect("/saved");
+        }
+    })
+});
 
 // Showing saved articles
 router.get("/saved", function (req, res) {
@@ -143,21 +89,77 @@ router.get("/saved", function (req, res) {
             });
         }
     });
+});
+
+// Delete a saved article
+router.post("/delete/:id", function (req, res) {
+    Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": false }, function (err, doc) {
+        // Log any errors
+        if (err) {
+            console.log(err);
+        } else {
+            //basically.. refresh the page
+            res.redirect("/saved");
+        }
+    });
 })
 
-//deleting the article form the saved list
-router.post("/delete/:id", function (req, res) {
-    Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": false })
-        // Execute the above query
+// Grab an article by its ObjectId
+router.get("/articles/:id", function (req, res) {
+    // Using the id passed in the id parameter,
+    // Prepare a query that finds the matching one in our db...
+    Article.findOne({ "_id": req.params.id })
+        // and populate all of the notes associated with it.
+        .populate("notes")
+        // now, execute our query
         .exec(function (err, doc) {
             // Log any errors
             if (err) {
                 console.log(err);
-            } else {
-                //basically.. refresh the page
-                res.redirect("/saved");
+            }
+            // Otherwise, send the doc to the browser as a json object
+            else {
+                res.json(doc);
             }
         });
-})
+});
+
+// Create a new note or replace an existing note
+router.post("/articles/:id", function (req, res) {
+
+    // Create a new note and pass the req.body to the entry
+    var newNote = new Note(req.body);
+    // And save the new note the db
+    newNote.save(function (error, doc) {
+        // Log any errors
+        if (error) {
+            console.log(error);
+        }
+        else {
+            // Use the article id to find it and then push note
+            Article.findOneAndUpdate({ "_id": req.params.id }, { $push: { notes: doc._id } }, { new: true, upsert: true })
+                .populate('notes')
+                .exec(function (err, doc) {
+                    if (err) {
+                        console.log("Cannot find article.");
+                    } else {
+                        res.send(doc);
+                    }
+                });
+        }
+    });
+});
+
+// Delete a note
+router.get("/notes/:id", function (req, res) {
+    Note.findOneAndRemove({ "_id": req.params.id }, function (err, doc) {
+        if (err) {
+            console.log("Not able to delete:" + err);
+        } else {
+            res.send(doc);
+        }
+
+    });
+});
 
 module.exports = router;
