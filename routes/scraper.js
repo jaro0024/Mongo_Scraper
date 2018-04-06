@@ -28,8 +28,7 @@ router.get("/scrape", function (req, res) {
             result.link = $(this).children("a").attr("href");
 
             // Create a new ArticleSchema entry
-            // Notice the (result)
-            // This effectively passes the result object to the entry, including the title and link
+            // This passes the result object to the entry, including the title and link
             var entry = new Article(result);
 
             // Save that entry to the db
