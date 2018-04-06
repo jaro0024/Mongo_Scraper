@@ -11,7 +11,7 @@ router.get("/", function (req, res) {
     res.render("index");
 });
 
-
+// Scraping website to get articles
 router.get("/scrape", function (req, res) {
     // Grab the body of the html with request
     request("http://www.nytimes.com/", function (error, response, html) {
@@ -47,7 +47,7 @@ router.get("/scrape", function (req, res) {
     res.redirect("/articles");
 });
 
-// this will get the articles we scraped from the mongoDB
+// Getting the articles we scraped from the mongoDB
 router.get("/articles", function (req, res) {
     // grab every doc in the Articles array
     Article.find({}, function (err, doc) {
@@ -120,9 +120,7 @@ router.post("/articles/:id", function (req, res) {
 
 // Saving an article
 router.post("/save/:id", function (req, res) {
-    Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": true })
-        // Execute the above query
-        .exec(function (err, doc) {
+    Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": true }, function (err, doc) {
             // Log any errors
             if (err) {
                 console.log(err);
@@ -130,7 +128,7 @@ router.post("/save/:id", function (req, res) {
                 // Or send the user back to the all articles page once saved
                 res.redirect("/saved");
             }
-        });
+        })
 })
 
 // Showing saved articles
