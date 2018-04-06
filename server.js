@@ -15,7 +15,7 @@ mongoose.connect(MONGODB_URI);
 var db = mongoose.connection;
 
 // Port
-var PORT = process.env.PORT || 8080;
+var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
