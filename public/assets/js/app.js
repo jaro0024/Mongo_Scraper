@@ -13,7 +13,7 @@ $(document).on("click", "#modalbutton", function () {
     })
         // With that done, add the note information to the page
         .done(function (data) {
-            console.log(data);
+            console.log(data.notes);
             // Placeholder for notes
             $("#notes").append("<p id='actualnotes'></p>");
             if (data.notes) {
@@ -28,7 +28,7 @@ $(document).on("click", "#modalbutton", function () {
                 $('#actualnotes').text("There aren't any notes yet.");
             }
             // A textarea to add a new note body
-            $("#notes").append("<textarea id=bodyinput' name='body'></textarea>");
+            $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
             // A button to submit a new note, with the id of the article saved to it
             $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
         });
@@ -36,8 +36,10 @@ $(document).on("click", "#modalbutton", function () {
 
 // Save a note
 $(document).on("click", "#savenote", function () {
+    // var userNote = $("#bodyinput").val();
     // Grab the id associated with the article from the submit button
     var thisId = $(this).attr("data-id");
+    console.log(thisId);
     // Run a POST request to change the note, using what's entered in the inputs
     $.ajax({
         method: "POST",
@@ -49,6 +51,9 @@ $(document).on("click", "#savenote", function () {
     })
         // With that done
         .done(function (data) {
+            // console.log(data);
+            // console.log(data.note);
+
             $("#notelist").empty();
             for (var i = 0; i < data.notes.length; i++) {
                 $("#notelist").append("<li id='" + data.notes[i]._id + "'>" + data.notes[i].body + " " + "<button data-id='" + data.notes[i]._id +

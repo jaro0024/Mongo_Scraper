@@ -138,11 +138,12 @@ router.post("/articles/:id", function (req, res) {
         else {
             // Use the article id to find it and then push note
             Article.findOneAndUpdate({ "_id": req.params.id }, { $push: { notes: doc._id } }, { new: true, upsert: true })
-                .populate('notes')
+                .populate("notes")
                 .exec(function (err, doc) {
                     if (err) {
                         console.log("Cannot find article.");
                     } else {
+                        console.log(doc);
                         res.send(doc);
                     }
                 });
